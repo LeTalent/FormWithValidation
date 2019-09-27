@@ -1,20 +1,115 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
+<form [formGroup]="_parentForm" novalidate (ngSubmit)="onSubmit(parentForm)">
+  <div formGroupName="name">
+    <b>Name</b>
+    <br />
+    <label
+      >First Name
+      <input type="text" formControlName="fname" />
+      <small *ngIf="_name.controls.fname.touched && !_name.controls.fname.valid"
+        >Required.</small
+      >
+    </label>
+    <br />
+    <label
+      >Last Name
+      <input type="text" formControlName="lname" />
+      <small *ngIf="_name.controls.lname.touched && !_name.controls.lname.valid"
+        >Required.</small
+      >
+    </label>
+  </div>
+  <br />
+  <div formGroupName="addr">
+    <b>Address</b>
+    <br />
+    <label class="left"
+      >Address #1
+      <input type="text" formControlName="addr1" />
+      <small *ngIf="_addr.controls.addr1.touched && !_addr.controls.addr1.valid"
+        >Required.</small
+      >
+    </label>
+    <br />
+    <label
+      >Address #2
+      <input type="text" formControlName="addr2" />
+    </label>
+    <br />
+    <label
+      >City
+      <input type="text" formControlName="city" />
+      <small *ngIf="_addr.controls.city.touched && !_addr.controls.city.valid"
+        >Required.</small
+      >
+    </label>
+    <br />
+    <label
+      >State
+      <select formControlName="state">
+        <option>AL</option>
+        <option>GA</option>
+        <option>FL</option>
+      </select>
+      <small *ngIf="_addr.controls.state.touched && !_addr.controls.state.valid"
+        >Required.</small
+      >
+    </label>
+    <br />
+    <label
+      >Zip
+      <input type="number" formControlName="zip" maxLength="3" minLength="2" />
+      <small *ngIf="_addr.controls.zip.touched && !_addr.controls.zip.valid"
+        >Required.</small
+      >
+      <small
+        *ngIf="_addr.controls.zip.minlength && _addr.controls.zip.maxlength"
+        >lenght.</small
+      >
+    </label>
+  </div>
+  <br />
+  <div formArrayName="items">
+    <b>Items</b>
+    <br />
+    <p [formGroupName]="i" *ngFor="let item of _items.controls; let i = index">
+      <label
+        >Name:&nbsp;<input type="text" formControlName="name" size="30" />
+        <small *ngIf="item.controls.name.touched && !item.controls.name.valid"
+          >Required.</small
+        >
+      </label>
+      <label
+        >Qty:&nbsp;<input
+          type="number"
+          formControlName="qty"
+          min="1"
+          max="10"
+        />
+        <small *ngIf="item.controls.qty.touched && !item.controls.qty.valid"
+          >Required.</small
+        >
+      </label>
+      <label
+        >Price:&nbsp;<input
+          type="number"
+          formControlName="price"
+          min="0.01"
+          max="1000"
+          step=".01"
+        />
+        <small
+          *ngIf="
+            submitted &&
+            (item.controls.price.touched && !item.controls.price.valid)
+          "
+          >Required.</small
+        >
+      </label>
+    </p>
+  </div>
+  <br />
+  <div>
+    <input type="button" value="Add Item" (click)="addItem()" />
+    <input type="submit" value="Submit" />
+  </div>
+</form>
